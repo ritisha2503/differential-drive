@@ -12,14 +12,27 @@ x = -60
 y = -60
 theta = np.radians(0)
 
-goal_x = 60
-goal_y = 40
+goal_x = x
+goal_y = y
 
 trail = []
 
-plt.figure(figsize=(8,8))
+fig, ax = plt.subplots(figsize=(8, 8))
 
-for frame in range(1000):
+def onclick(event):
+    global goal_x, goal_y
+
+    if event.xdata is None or event.ydata is None:
+        return
+
+    goal_x = event.xdata
+    goal_y = event.ydata
+
+    print(f"New Goal: ({goal_x:.2f}, {goal_y:.2f})")
+
+fig.canvas.mpl_connect('button_press_event', onclick)
+
+while True:
 
     vl, vr, distance = compute_wheel_speeds(
         x,
@@ -42,28 +55,22 @@ for frame in range(1000):
 
     trail.append((x,y))
 
-    plt.cla()
+    ax.clear()
 
-    plt.axis("equal")
-    plt.xlim(-100,100)
-    plt.ylim(-100,100)
+    ax.set_aspect('equal')
+    ax.set_xlim(-100, 100)
+    ax.set_ylim(-100, 100)
 
-    plt.grid(True)
+    ax.grid(True)
 
-    plt.title("Differential Drive Robot")
+    ax.set_title("Click anywhere to move the robot")
 
-    plt.scatter(goal_x, goal_y, color="green", marker="x", s=100)
+    ax.scatter(goal_x, goal_y, color="green", marker="x", s=100)
 
-    plt.plot([p[0] for p in trail], [p[1] for p in trail], color="orange")
+    ax.plot([p[0] for p in trail], [p[1] for p in trail], color="orange")
 
-    plt.scatter(x, y, color="red", s=100)
+    ax.scatter(x, y, color="red", s=100)
 
-    plt.arrow(x, y, 10*np.cos(theta), 10*np.sin(theta), head_width=3, head_length=4, color="blue")
+    ax.arrow(x, y, 10*np.cos(theta), 10*np.sin(theta), head_width=3, head_length=4, color="blue")
 
     plt.pause(0.01)
-
-    if distance < 2:
-        print("Goal Reached!")
-        break
-
-plt.show()
