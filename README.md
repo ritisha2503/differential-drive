@@ -115,6 +115,12 @@ The robot automatically rotates toward the selected point and navigates to it wh
 
 ---
 
+## Video Demonstration
+
+<video src='diff_drive_recording.webm' width='100%' controls></video>
+
+---
+
 ## Challenges
 
 - Computing robot orientation correctly.
