@@ -1,6 +1,2 @@
-def main():
-    print("Hello from differential-drive!")
-
-
-if __name__ == "__main__":
-    main()
+from src.robot import update_pose
+from src.controller import compute_wheel_speeds
